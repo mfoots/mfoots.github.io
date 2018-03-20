@@ -1,0 +1,19 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  width: 70%;
+  margin: 0 auto;
+}
+h1 {
+  display: inline-block;
+  width: auto;
+  padding: 5px 10px 5px 100px;
+  margin-bottom: 5px;
+  font-size: 50px;
+  font-weight: 300;
+  background-color: black;
+  color: white;
+}
+p {
+  font-size: 30px;
+  line-height: 1.3;
+}
