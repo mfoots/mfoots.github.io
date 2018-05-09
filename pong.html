@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Animate a Ball on the Canvas</title>
+    <style>
+      canvas {
+        border: 1px solid rgb(200, 200, 200);
+      }
+    </style>
+  </head>
+  <body>
+  <canvas width="600" height="300"></canvas>
+
+  <script>
+    let canvas = document.querySelector('canvas');
+    let ctx = canvas.getContext('2d');
+    let rfa; //stores the request for animation frame result
+    let pause = false; // is the game passed at the moment?
+
+    // create a ball object
+    let ball = {
+      x: 100,
+      y: 100,
+      vx: 5,
+      vy: 2,
+      radius: 25,
+      color: 'blue',
+      draw: function() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    };
+
+    // create a paddle object
+    let paddle = {
+      x: 100,
+      y: 250,
+      width: 100,
+      height: 20,
+      color: 'red',
+      draw: function () {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      },
+      clear: function () {
+        ctx.clearRect(this.x, this.y, this.width, this.height);
+      }
+    };
+
+    // create a score object
+    let score = {
+      x: canvas.width/2,
+      y: 30,
+      points: 0,
+      draw: function () {
+        ctx.font = '20px monospace';
+        ctx.fillStyle = 'black';
+        ctx.textAlign = "center";
+        ctx.fillText("Score: " + this.points, this.x, this.y);
+      }
+    };
+
+    // function to update the canvas and the bal position
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ball.draw();
+      paddle.draw();
+      score.draw();
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+
+      // check ball at boundaries
+      if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0){
+        ball.vx = -ball.vx
+      }
+      if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0){
+        ball.vy = -ball.vy
+      }
+
+      // check to see if ball collides with paddle
+      if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
+        if (ball.y + ball.radius > paddle.y && ball.vy > 0) {
+          ball.vy = -ball.vy;
+          score.points += 1;
+        }
+      }
+      rfa = window.requestAnimationFrame(update);
+    }
+
+    canvas.addEventListener('mousemove', function(event) {
+      if (!pause) {
+        paddle.clear();
+        paddle.x = event.clientX - (paddle.width/2);
+        paddle.draw();
+      }
+
+    });
+
+    document.onkeypress = function(event) {
+      // console.log(event.key);
+      if (event.key == 'p') {
+          pause = !pause;
+      }
+      if (pause) {
+        ctx.textAlign = "center";
+        ctx.font = "48px monospace";
+        ctx.fillStyle = 'red';
+        ctx.fillText("PAUSED", canvas.width/2, canvas.height/2);
+        window.cancelAnimationFrame(rfa);
+      } else {
+        raf = window.requestAnimationFrame(update);
+      }
+    }
+
+    // call all of the object's draw functions
+    ball.draw();
+    paddle.draw();
+    score.draw();
+    raf = window.requestAnimationFrame(update);
+
+  </script>
+  </body>
+</html>
