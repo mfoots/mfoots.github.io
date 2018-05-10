@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Animate a Ball on the Canvas</title>
+    <title>Pong Game</title>
     <style>
       canvas {
         border: 1px solid rgb(200, 200, 200);
@@ -11,7 +11,7 @@
   </head>
   <body>
   <canvas width="600" height="300"></canvas>
-  <p>press the letter p to pause</p>
+  <pre>press the letter p to pause</pre>
   <script>
     let canvas = document.querySelector('canvas');
     let ctx = canvas.getContext('2d');
@@ -74,10 +74,10 @@
       ball.y += ball.vy;
 
       // check ball at boundaries
-      if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0){
+      if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
         ball.vx = -ball.vx
       }
-      if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0){
+      if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
         ball.vy = -ball.vy
       }
 
